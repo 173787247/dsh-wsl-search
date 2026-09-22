@@ -1,0 +1,9 @@
+- insert:
+    - id: dsh-wsl-search
+      name: dsh-wsl-search
+      config:
+        enabled: true
+        timeoutMs: 30000
+        maxMatches: 50
+        maxLineChars: 400
+        allowRoots: []
