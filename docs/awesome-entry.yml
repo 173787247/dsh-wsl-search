@@ -1,0 +1,7 @@
+# Awesome draft 鈥?submit after repo age >=1 day and 10+ commits
+url: https://github.com/173787247/dsh-wsl-search
+name: 173787247/dsh-wsl-search
+category: wsl
+description:
+  en: 'Sandboxed ripgrep/fd under home and ~/.dsh. Optional kit companion; not in install.sh.'
+  zh: 'Sandboxed ripgrep/fd under home and ~/.dsh. 鍙€夋彃浠讹紝涓嶅湪 install.sh銆?
