@@ -1,4 +1,4 @@
-import { rgSearch, fdSearch, searchStatus } from "./lib/search.js";
+import { rgSearch, fdSearch, searchStatus, astGrepSearch } from "./lib/search.js";
 
 export const name = "dsh-wsl-search";
 export const inject = ["tools", "systemPrompt"];
@@ -17,14 +17,14 @@ export function apply(ctx, config = {}) {
   ctx.systemPrompt.section({
     name: "tool:search",
     order: 130,
-    text: "dsh-wsl-search runs sandboxed ripgrep/fd under allowlisted roots (default: $HOME and ~/.dsh). Do not search all of /mnt/c. Prefer search_rg for content and search_fd for filenames.",
+    text: "dsh-wsl-search runs sandboxed ripgrep/fd/ast-grep under allowlisted roots (default: $HOME and ~/.dsh). Do not search all of /mnt/c. Prefer search_rg for text, search_fd for filenames, search_astgrep for structural patterns.",
   });
 
   const base = { allowRoots, timeoutMs, maxMatches, maxLineChars };
 
   ctx.tools.register({
     name: "search_status",
-    description: "Whether rg/fd are on PATH.",
+    description: "Whether rg/fd/ast-grep are on PATH.",
     parameters: { type: "object", additionalProperties: false, properties: {} },
     output: { schema: { type: "object", additionalProperties: true }, render: (_a, v) => [{ type: "text", text: JSON.stringify(v) }] },
     timeoutMs: 5_000,
@@ -108,6 +108,46 @@ export function apply(ctx, config = {}) {
     },
     presentCall: () => ({ card: "generic", title: "fd" }),
     presentResult: (_a, r) => ({ card: "generic", title: "fd", content: r.content }),
+  });
+
+  ctx.tools.register({
+    name: "search_astgrep",
+    description: "ast-grep structural search under an allowlisted root. Caps match count.",
+    parameters: {
+      type: "object",
+      additionalProperties: false,
+      required: ["pattern", "root"],
+      properties: {
+        pattern: { type: "string", description: "ast-grep pattern" },
+        root: { type: "string" },
+        lang: { type: "string", description: "Optional language, e.g. ts, py, go" },
+      },
+    },
+    output: {
+      schema: { type: "object", additionalProperties: true },
+      render: (_a, v) => [
+        {
+          type: "text",
+          text:
+            v.ok === false
+              ? v.error
+              : [`search_astgrep count=${v.count} root=${v.root}`, ...(v.matches || []).map((m) => `${m.path}:${m.line}:${m.text}`)].join(
+                  "\n",
+                ),
+        },
+      ],
+    },
+    timeoutMs,
+    isConcurrencySafe: () => true,
+    async execute(args) {
+      try {
+        return await astGrepSearch({ ...base, ...args });
+      } catch (e) {
+        return { ok: false, error: e instanceof Error ? e.message : String(e) };
+      }
+    },
+    presentCall: () => ({ card: "generic", title: "ast-grep" }),
+    presentResult: (_a, r) => ({ card: "generic", title: "ast-grep", content: r.content }),
   });
 }
 
