@@ -37,6 +37,15 @@ config:
 
 Add absolute project paths to `allowRoots` when needed (do not open `/`).
 
+## Compatibility
+
+| Field | Value |
+|-------|-------|
+| **Plugin** | `dsh-wsl-search` **0.2.0** |
+| **Minimum dsh** | ≥ **0.1.2** (web UI one-shot `?token=` on Windows relay `:3081`) |
+| **Latest verified** | See [dsh-wsl-kit Compatibility](https://github.com/173787247/dsh-wsl-kit#compatibility-2026-09) (currently **`0.1.7-alpha.2`**) — single source of truth for the suite |
+| **Kit set** | optional (not in `install.sh` / `KIT_SET=daily` by default) |
+
 ## License
 
 MIT
