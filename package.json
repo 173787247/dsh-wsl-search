@@ -1,6 +1,6 @@
 {
   "name": "dsh-wsl-search",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "DeepSeek Harness WSL plugin: sandboxed ripgrep/fd/ast-grep under allowlisted roots.",
   "license": "MIT",
   "repository": { "type": "git", "url": "https://github.com/173787247/dsh-wsl-search.git" },

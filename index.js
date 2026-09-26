@@ -17,7 +17,7 @@ export function apply(ctx, config = {}) {
   ctx.systemPrompt.section({
     name: "tool:search",
     order: 130,
-    text: "dsh-wsl-search runs sandboxed ripgrep/fd/ast-grep under allowlisted roots (default: $HOME and ~/.dsh). Do not search all of /mnt/c. Prefer search_rg for text, search_fd for filenames, search_astgrep for structural patterns.",
+    text: "dsh-wsl-search runs sandboxed ripgrep/fd/ast-grep under allowlisted roots (default: $HOME, ~/.dsh, and ~/.dsh/im-workspace). Do not search all of /mnt/c. Prefer search_rg for text, search_fd for filenames, search_astgrep for structural patterns.",
   });
 
   const base = { allowRoots, timeoutMs, maxMatches, maxLineChars };
